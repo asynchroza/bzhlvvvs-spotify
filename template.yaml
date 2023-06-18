@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  bzhlvvvs-spotify-lambda
+
+  SAM Template for BZHLVVVS SPOTIFY Lambda 
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+
+Resources:
+  BzhlvvvsSpotifyServiceFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        Request:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /
+            Method: get
+
+Outputs:
+  BzhlvvvsSpotifyFunction:
+    Description: 'Lambda Function ARN'
+    Value: !GetAtt BzhlvvvsSpotifyFunction.Arn
+  BzhlvvvsSpotifyIamRole:
+    Description: 'Implicit IAM Role'
+    Value: !GetAtt BzhlvvvsSpotifyFunctionRole.Arn
+  BzhlvvvsSpotifyApi:
+    Description: 'API Gateway endpoint URL for Prod stage'
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/crs/'
