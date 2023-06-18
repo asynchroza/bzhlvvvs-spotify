@@ -12,7 +12,7 @@ Globals:
     MemorySize: 128
 
 Resources:
-  BzhlvvvsSpotifyServiceFunction:
+  BzhlvvvsSpotifyFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: src/
@@ -36,4 +36,4 @@ Outputs:
     Value: !GetAtt BzhlvvvsSpotifyFunctionRole.Arn
   BzhlvvvsSpotifyApi:
     Description: 'API Gateway endpoint URL for Prod stage'
-    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/crs/'
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
