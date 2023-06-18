@@ -7,9 +7,15 @@
     <script>
         console.log("HERE")
     </script>
+    <script src="https://kit.fontawesome.com/f681b4ab71.js" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <style>
 
-        #landing-wrapper {
+    body {
+        font-family: 'Poppins';
+    }
+
+    #landing-wrapper {
         left: 0;
         top: 0;
         position: absolute;
@@ -19,10 +25,65 @@
         background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1)), url('https://i.scdn.co/image/ab6761610000e5eb1f98760ed5b47b21eaf56e8f');
         height: 100%;
         color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: -10
     }
+
+    .player {
+        background-color: rgba(0, 0, 0, 0.8);
+        height: 70vh;
+        width: 70vw;
+        border-radius: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .player {
+        width: 300px;
+        height: 500px;
+    }
+    
+
+    .song-image {
+        height: 220px;
+        width: 220px;
+    }
+
+    .song-title {
+        margin: 0;
+        font-weight: 500;
+        font-size: large;
+    }
+
+    .artists {
+        margin: 0;
+        font-size: small;
+    }
+
+    .icon {
+        padding-top: 1rem;
+    }
+
+    /* @media screen and (max-width: ) */
+
     </style>
 </head>
 <body>
-    <div id="landing-wrapper"></div>
+    <div id="landing-wrapper">
+        <div class="player">
+            <img class="song-image" src="https://i.scdn.co/image/ab6761610000e5eb1f98760ed5b47b21eaf56e8f"/>
+            <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; padding-top: 0.75rem">
+                <h3 class="song-title">Spice Girl</h3>
+                <p class="artists">Amine, Toni Montana</p>
+            </div>
+            <div class="icon">
+                <i class="fa-solid fa-play fa-2x"></i>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

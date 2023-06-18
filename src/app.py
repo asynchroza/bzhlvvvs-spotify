@@ -55,7 +55,7 @@ def get_artist_image(artist_url, bearer_token):
 
 
 def get_random_track_data(tracks: list, bearer_token: str) -> dict:
-    selected_track = tracks[int(random() * (len(tracks) - 1))]
+    selected_track = tracks[int(random() * len(tracks))]
 
     track_url = selected_track["track"]["external_urls"]["spotify"]
     track_image_url = selected_track["track"]["album"]["images"][
