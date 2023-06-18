@@ -78,6 +78,11 @@ def get_random_track_data(tracks: list, bearer_token: str) -> dict:
 
     return track_data
 
+def insert_data_in_template(html: str, track_data: dict) -> str:
+    html = html.replace('{artist.image}', track_data["artist_image_url"])
+
+    return html
+
 
 def lambda_handler(event, context):
     html = open("index.html", "r").read()
@@ -85,6 +90,6 @@ def lambda_handler(event, context):
     bearer_token = get_token()
     tracks = get_tracks(bearer_token)
     track_data = get_random_track_data(tracks, bearer_token)
-    print(track_data)
+    html = insert_data_in_template(html, track_data)
 
     return {"headers": {"Content-Type": "text/html"}, "statusCode": 200, "body": html}
