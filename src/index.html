@@ -44,7 +44,7 @@
     }
 
     .player {
-        width: 330px;
+        width: 360px;
         height: 500px;
     }
     
@@ -71,6 +71,10 @@
 
     .icon {
         padding-top: 1rem;
+    }
+
+    .icon:hover {
+        cursor: pointer;
     }
 
     .github {
@@ -102,7 +106,7 @@
         <div class="player">
             <p class="description">Selected for you <br/> from <a class="playlist-link" href="https://open.spotify.com/playlist/4qw4F3Mi3eGjXwLeKM5pYx?si=e26637db63a94ca0">M23_RANDOM</a></p>
             <img class="song-image" src="{track.image}" crossorigin="anonymous"/>
-            <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 1.5rem">
+            <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 1.5rem; margin-left: 0.75rem; margin-right: 0.75rem;">
                 <h3 class="song-title">{track.name}</h3>
                 <p class="artists">{track.artist}</p>
             </div>
@@ -120,6 +124,9 @@
     <!-- <img class="hackaround" src="{artist.image}" crossorigin="anonymous" hidden/> -->
 </body>
     <script>
+        document.querySelector('.icon').addEventListener('click', ()=>{
+            window.location.href = "{track.url}"
+        });
 
         const increaseColorChannels = (colors) => {
             const maxChannelValue = 255;

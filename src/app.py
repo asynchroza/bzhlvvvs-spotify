@@ -3,7 +3,6 @@ from os import getenv
 import requests
 from base64 import b64encode
 from dotenv import load_dotenv
-import os
 from random import random
 
 # container won't copy .env file
@@ -85,6 +84,7 @@ def insert_data_in_template(html: str, track_data: dict) -> str:
         .replace("{track.name}", track_data["track_name"])
         .replace("{track.artist}", track_data["artist_names"])
         .replace("{track.image}", track_data["track_image_url"])
+        .replace("{track.url}", track_data["track_url"])
     )
 
     return html
