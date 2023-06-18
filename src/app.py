@@ -58,9 +58,9 @@ def get_random_track_data(tracks: list, bearer_token: str) -> dict:
     selected_track = tracks[int(random() * len(tracks))]
 
     track_url = selected_track["track"]["external_urls"]["spotify"]
-    track_image_url = selected_track["track"]["album"]["images"][
-        0
-    ]["url"]  # expecting that the first object is always the largest
+    track_image_url = selected_track["track"]["album"]["images"][0][
+        "url"
+    ]  # expecting that the first object is always the largest
     track_name = selected_track["track"]["name"]
 
     artist_names_string = get_artist_names(selected_track["track"]["artists"])
@@ -73,13 +73,19 @@ def get_random_track_data(tracks: list, bearer_token: str) -> dict:
         "track_image_url": track_image_url,
         "track_name": track_name,
         "artist_names": artist_names_string,
-        "artist_image_url": artist_image_url
+        "artist_image_url": artist_image_url,
     }
 
     return track_data
 
+
 def insert_data_in_template(html: str, track_data: dict) -> str:
-    html = html.replace('{artist.image}', track_data["artist_image_url"])
+    html = (
+        html.replace("{artist.image}", track_data["artist_image_url"])
+        .replace("{track.name}", track_data["track_name"])
+        .replace("{track.artist}", track_data["artist_names"])
+        .replace("{track.image}", track_data["track_image_url"])
+    )
 
     return html
 
