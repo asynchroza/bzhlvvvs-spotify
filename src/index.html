@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@bzhlvvvs</title>
-    <script>
-        console.log("HERE")
-    </script>
     <script src="https://kit.fontawesome.com/f681b4ab71.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
     <style>
 
     body {
@@ -40,6 +39,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        margin-top: -100px;
     }
 
     .player {
@@ -74,7 +74,20 @@
 
     .github {
         position: absolute;
-        bottom: 0;
+        bottom: 50px;
+        right: 50px;
+    }
+
+    .linkedin {
+        position: absolute;
+        bottom: 50px;
+        left: 50px;
+    }
+
+    .description {
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 800;
     }
 
     </style>
@@ -82,7 +95,8 @@
 <body>
     <div id="landing-wrapper">
         <div class="player">
-            <img class="song-image" src="{track.image}"/>
+            <p class="description">Selected for you <br/> from M23_RANDOM</p>
+            <img class="song-image" src="{track.image}" crossorigin="anonymous"/>
             <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; padding-top: 0.75rem">
                 <h3 class="song-title">{track.name}</h3>
                 <p class="artists">{track.artist}</p>
@@ -91,9 +105,61 @@
                 <i class="fa-solid fa-play fa-2x"></i>
             </div>
         </div>
-        <div class="github">
-            <i class="fa-brands fa-github"></i>
+        <div class="linkedin" href="https://www.linkedin.com/in/mbozhilov/">
+            <i class="fa-brands fa-linkedin fa-3x"></i>
+        </div>
+        <div class="github" href="https://github.com/asynchroza/bzhlvvvs-spotify">
+            <i class="fa-brands fa-github fa-3x"></i>
         </div>
     </div>
+    <!-- <img class="hackaround" src="{artist.image}" crossorigin="anonymous" hidden/> -->
 </body>
+    <script>
+
+        const increaseColorChannels = (colors) => {
+            const maxChannelValue = 255;
+
+            r = Math.min(Math.round(colors[0] * 1.75), maxChannelValue);
+            g = Math.min(Math.round(colors[1] * 1.75), maxChannelValue);
+            b = Math.min(Math.round(colors[2] * 1.75), maxChannelValue);
+
+            return [r, g, b];
+        }
+
+        const getColorString = (r, g, b) => {
+            if(r < 20 && g < 20 && b < 20){
+                return `rgb(255, 255, 255)`;
+            } 
+
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        const changeIconColors = (colorString) => {
+            const linkedin = document.querySelector('.linkedin');
+            const github = document.querySelector('.github');
+
+            linkedin.style.color = colorString;
+            github.style.color = colorString;
+        }
+
+        const colorThief = new ColorThief();
+        const img = document.querySelector('.song-image');
+        const text = document.querySelector('.description');
+
+        if (img.complete) {
+            const color = colorThief.getColor(img);
+            const colorString = getColorString(...increaseColorChannels(color));
+            text.style.color = colorString;
+            changeIconColors(colorString);
+        } else {
+            img.addEventListener('load', function() {
+            const color = colorThief.getColor(img);
+            const colorString = getColorString(...increaseColorChannels(color));
+            text.style.color = colorString;
+            changeIconColors(colorString);
+            })
+        }
+
+
+    </script>
 </html>
