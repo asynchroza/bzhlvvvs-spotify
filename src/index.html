@@ -43,7 +43,7 @@
     }
 
     .player {
-        width: 300px;
+        width: 330px;
         height: 500px;
     }
     
@@ -85,9 +85,13 @@
     }
 
     .description {
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         text-align: center;
-        font-weight: 800;
+    }
+
+    .playlist-link {
+        text-decoration: none;
+        font-size: large;
     }
 
     </style>
@@ -95,9 +99,9 @@
 <body>
     <div id="landing-wrapper">
         <div class="player">
-            <p class="description">Selected for you <br/> from M23_RANDOM</p>
+            <p class="description">Selected for you <br/> from <a class="playlist-link" href="https://open.spotify.com/playlist/4qw4F3Mi3eGjXwLeKM5pYx?si=e26637db63a94ca0">M23_RANDOM</a></p>
             <img class="song-image" src="{track.image}" crossorigin="anonymous"/>
-            <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; padding-top: 0.75rem">
+            <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 1.5rem">
                 <h3 class="song-title">{track.name}</h3>
                 <p class="artists">{track.artist}</p>
             </div>
@@ -137,25 +141,29 @@
         const changeIconColors = (colorString) => {
             const linkedin = document.querySelector('.linkedin');
             const github = document.querySelector('.github');
+            const text = document.querySelector('.description');
+            const playlistLink = document.querySelector('.playlist-link');
+            const playButton = document.querySelector('.icon');
 
             linkedin.style.color = colorString;
             github.style.color = colorString;
+            text.style.color = colorString;
+            playlistLink.style.color = colorString;
+            playButton.style.color = colorString;
+
         }
 
         const colorThief = new ColorThief();
         const img = document.querySelector('.song-image');
-        const text = document.querySelector('.description');
 
         if (img.complete) {
             const color = colorThief.getColor(img);
             const colorString = getColorString(...increaseColorChannels(color));
-            text.style.color = colorString;
             changeIconColors(colorString);
         } else {
             img.addEventListener('load', function() {
             const color = colorThief.getColor(img);
             const colorString = getColorString(...increaseColorChannels(color));
-            text.style.color = colorString;
             changeIconColors(colorString);
             })
         }
