@@ -91,11 +91,26 @@ def insert_data_in_template(html: str, track_data: dict) -> str:
 
 
 def lambda_handler(event, context):
-    html = open("index.html", "r").read()
+    try:
+        html = open("index.html", "r").read()
+        bearer_token = get_token()
+        tracks = get_tracks(bearer_token)
+        track_data = get_random_track_data(tracks, bearer_token)
+        html = insert_data_in_template(html, track_data)
 
-    bearer_token = get_token()
-    tracks = get_tracks(bearer_token)
-    track_data = get_random_track_data(tracks, bearer_token)
-    html = insert_data_in_template(html, track_data)
+        return {
+            "headers": {"Content-Type": "text/html"},
+            "statusCode": 200,
+            "body": html,
+        }
 
-    return {"headers": {"Content-Type": "text/html"}, "statusCode": 200, "body": html}
+    except Exception as e:
+        return {
+            "headers": {"Content-Type": "application/json"},
+            "statusCode": 500,
+            "body": {
+                "message": "I'm probably in the Bahamas 🌴 right now! Excuse me for the inconvenience. I will get it fixed once I'm back 🫶.", 
+                "playlist": "https://open.spotify.com/playlist/4qw4F3Mi3eGjXwLeKM5pYx?si=e26637db63a94ca0",
+                "error": str(e),
+            },
+        }
