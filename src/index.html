@@ -156,11 +156,9 @@
 
         const getColorString = (color, m, threshold) => {
             // make colors brighter if below threshold
-            if(color.every(channel => channel < threshold)){
-                while(color.every(channel => channel < threshold)){
-                    color = color.map(x => x * m);
-                }
-            } 
+            while(color.every(channel => channel < threshold)){
+                color = color.map(x => x * m);
+            }
 
             return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
         }
