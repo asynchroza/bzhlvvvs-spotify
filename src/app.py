@@ -35,14 +35,6 @@ def _get(obj: dict, key: str, throw: bool = False, default_value: str = "") -> s
 
 
 def get_environment() -> dict[str, str]:
-    """Loads all environment variables needed for making calls
-    and updating the html template.
-
-    Implementation:
-        Some of the variables are loaded using get() because they're
-        not mission critical, the template will simply not render the corresponding elements.
-    """
-    
     return {
         "CLIENT_ID": _get(environ, "CLIENT_ID", True),
         "CLIENT_SECRET": _get(environ, "CLIENT_SECRET", True),
