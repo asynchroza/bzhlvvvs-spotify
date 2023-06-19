@@ -1,4 +1,4 @@
-# bzhlvvvs-spotify 
+# bzhlvvvs-spotify  [![.github/workflows/cicd.yaml](https://github.com/asynchroza/bzhlvvvs-spotify/actions/workflows/cicd.yaml/badge.svg)](https://github.com/asynchroza/bzhlvvvs-spotify/actions/workflows/cicd.yaml)
 
 Yo, nice to see you there! 👋  
 This is the github repo containing the source code of the random Spotify song picker you're probably coming from. 🔥
