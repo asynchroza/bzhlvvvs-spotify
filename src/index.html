@@ -83,10 +83,18 @@
         right: 50px;
     }
 
+    .github:hover {
+        cursor: pointer;
+    }
+
     .linkedin {
         position: absolute;
         bottom: 50px;
         left: 50px;
+    }
+
+    .linkedin:hover {
+        cursor: pointer;
     }
 
     .description {
@@ -114,19 +122,35 @@
                 <i class="fa-solid fa-play fa-2x"></i>
             </div>
         </div>
-        <div class="linkedin" href="https://www.linkedin.com/in/mbozhilov/">
+        <div class="linkedin">
             <i class="fa-brands fa-linkedin fa-3x"></i>
         </div>
-        <div class="github" href="https://github.com/asynchroza/bzhlvvvs-spotify">
+        <div class="github">
             <i class="fa-brands fa-github fa-3x"></i>
         </div>
     </div>
     <!-- <img class="hackaround" src="{artist.image}" crossorigin="anonymous" hidden/> -->
 </body>
     <script>
-        document.querySelector('.icon').addEventListener('click', ()=>{
-            window.location.href = "{track.url}"
-        });
+
+        const redirectTo = (url) => {
+            window.location.href = url;
+        }
+
+        const playButton = document.querySelector('.icon')
+        playButton.addEventListener('click', () => {
+            redirectTo("{track.url}");
+        })
+
+        const github = document.querySelector('.github');
+        github.addEventListener('click', () => {
+            redirectTo("https://github.com/asynchroza/bzhlvvvs-spotify")
+        })
+
+        const linkedin = document.querySelector('.linkedin');
+        linkedin.addEventListener('click', () => {
+            redirectTo("https://www.linkedin.com/in/mbozhilov/")
+        })
 
         const increaseColorChannels = (colors) => {
             const maxChannelValue = 255;
@@ -147,11 +171,8 @@
         }
 
         const changeIconColors = (colorString) => {
-            const linkedin = document.querySelector('.linkedin');
-            const github = document.querySelector('.github');
             const text = document.querySelector('.description');
             const playlistLink = document.querySelector('.playlist-link');
-            const playButton = document.querySelector('.icon');
 
             linkedin.style.color = colorString;
             github.style.color = colorString;
