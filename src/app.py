@@ -1,19 +1,60 @@
 import json
-from os import getenv
+from os import environ
 import requests
 from base64 import b64encode
 from dotenv import load_dotenv
 from random import random
+from typing import Union
 
 # container won't copy .env file
 load_dotenv(".env.spotify")
 
 SPOTIFY_API = "https://api.spotify.com"
-CLIENT_ID = getenv("CLIENT_ID")
-CLIENT_SECRET = getenv("CLIENT_SECRET")
+
+def _get(obj: dict, key: str, throw: bool = False) -> Union[str, None]:
+    """Utility function for fetching an item from a dictionary.
+    Throws a well formatted exception if key is not found and throw argument is True.
+    Otherwise, it returns None.
+
+    Args:
+        throw (bool, optional): Throw exception if key is not found
+
+    Returns:
+        Union[str, None]
+    """
+    try: 
+        return obj[key]
+    except Exception as e:
+        if throw:
+            raise Exception(f"{str(e)} key was not found in dictionary")
+        return None
 
 
-def get_token() -> str:
+
+def get_environment() -> dict[str, None]:
+    """Loads all environment variables needed for making calls
+    and updating the html template.
+
+    Implementation:
+        Some of the variables are loaded using get() because they're
+        not mission critical, the template will simply not render the corresponding elements.
+
+    Returns:
+        dict[str, None]
+    """
+    
+    return {
+        "CLIENT_ID": _get(environ, "CLIENT_ID", True),
+        "CLIENT_SECRET": _get(environ, "CLIENT_SECRET", True),
+        "PLAYLIST_ID": _get(environ, "PLAYLIST_ID", True),
+        "TITLE": _get(environ, "TITLE", True),
+        "LINKEDIN": _get(environ, "LINKEDIN"),
+        "GITHUB": _get(environ, "GITHUB"),
+        "FAVICON_URL": _get(environ, "FAVICON_URL"),
+    }
+
+
+def get_token(CLIENT_ID: str, CLIENT_SECRET: str) -> str:
     access_token = b64encode(bytes(f"{CLIENT_ID}:{CLIENT_SECRET}", "utf-8"))
     token_url = "https://accounts.spotify.com/api/token"
 
@@ -93,7 +134,8 @@ def insert_data_in_template(html: str, track_data: dict) -> str:
 def lambda_handler(event, context):
     try:
         html = open("index.html", "r").read()
-        bearer_token = get_token()
+        environment = get_environment()
+        bearer_token = get_token(environment["CLIENT_ID"], environment["SECRET_ID"])
         tracks = get_tracks(bearer_token)
         track_data = get_random_track_data(tracks, bearer_token)
         html = insert_data_in_template(html, track_data)
@@ -105,11 +147,13 @@ def lambda_handler(event, context):
         }
 
     except Exception as e:
+        print(e)
+
         return {
             "headers": {"Content-Type": "application/json"},
             "statusCode": 500,
             "body": {
-                "message": "I'm probably in the Bahamas 🌴 right now! Excuse me for the inconvenience. I will get it fixed once I'm back 🫶.", 
+                "message": "I'm probably in the Bahamas 🌴 right now! Excuse me for the inconvenience. I will get it fixed once I'm back 🫶.",
                 "playlist": "https://open.spotify.com/playlist/4qw4F3Mi3eGjXwLeKM5pYx?si=e26637db63a94ca0",
                 "error": str(e),
             },
