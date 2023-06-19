@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@bzhlvvvs</title>
+    <title>{index.title}</title>
     <script src="https://kit.fontawesome.com/f681b4ab71.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    <link rel="icon" type="image/x-icon" href="https://personal-misho.s3.eu-north-1.amazonaws.com/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="{index.favicon}"/>
 
     <style>
 
@@ -114,7 +114,7 @@
 <body>
     <div id="landing-wrapper">
         <div class="player">
-            <p class="description">Selected for you <br/> from <a class="playlist-link" href="https://open.spotify.com/playlist/4qw4F3Mi3eGjXwLeKM5pYx?si=e26637db63a94ca0">M23_RANDOM</a></p>
+            <p class="description">Selected for you <br/> from <a class="playlist-link" href="{playlist.public_url}">{playlist.name}</a></p>
             <img class="song-image" src="{track.image}" crossorigin="anonymous"/>
             <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 1.5rem; margin-left: 0.75rem; margin-right: 0.75rem;">
                 <h3 class="song-title">{track.name}</h3>
@@ -139,20 +139,24 @@
             window.location.href = url;
         }
 
-        const playButton = document.querySelector('.icon')
-        playButton.addEventListener('click', () => {
-            redirectTo("{track.url}");
-        })
+        const chainRedirectOrHideElem = (elem, url) => {
+            if (url === ""){
+                elem.style.display = "none";
+                return;
+            }
+
+            elem.addEventListener('click', () => {
+                redirectTo(url);
+            })
+        }
 
         const github = document.querySelector('.github');
-        github.addEventListener('click', () => {
-            redirectTo("https://github.com/asynchroza/bzhlvvvs-spotify")
-        })
-
+        const playButton = document.querySelector('.icon');
         const linkedin = document.querySelector('.linkedin');
-        linkedin.addEventListener('click', () => {
-            redirectTo("https://www.linkedin.com/in/mbozhilov/")
-        })
+
+        chainRedirectOrHideElem(github, "{icon.github}");
+        chainRedirectOrHideElem(playButton, "{track.url}");
+        chainRedirectOrHideElem(linkedin, "{icon.linkedin}")
 
         const getColorString = (color, m, threshold) => {
             // make colors brighter if below threshold
