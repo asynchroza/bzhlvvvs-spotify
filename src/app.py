@@ -69,13 +69,20 @@ def get_token(CLIENT_ID: str, CLIENT_SECRET: str) -> str:
     return response["access_token"]
 
 
-def get_tracks(bearer_token: str) -> list:
-    playlists_url = f"{SPOTIFY_API}/v1/playlists/4qw4F3Mi3eGjXwLeKM5pYx"
+def get_tracks_and_playlist_info(bearer_token: str, PLAYLIST_ID: str) -> tuple[str, str, str]:
+    playlists_url = f"{SPOTIFY_API}/v1/playlists/{PLAYLIST_ID}"
 
     headers = {"Authorization": f"Bearer {bearer_token}"}
 
     response = json.loads(requests.get(playlists_url, headers=headers).content)
-    return response["tracks"]["items"]
+    items = response["tracks"]["items"]
+    playlist_public_url = response["external_urls"]["spotify"]
+    playlist_name = response["name"]
+
+    return items, {
+        "public_url": playlist_public_url,
+        "name": playlist_name
+    }
 
 
 def get_artist_names(artists):
@@ -119,13 +126,15 @@ def get_random_track_data(tracks: list, bearer_token: str) -> dict:
     return track_data
 
 
-def insert_data_in_template(html: str, track_data: dict) -> str:
+def insert_data_in_template(html: str, track_data: dict, environment: dict, playlist_info: dict) -> str:
     html = (
         html.replace("{artist.image}", track_data["artist_image_url"])
         .replace("{track.name}", track_data["track_name"])
         .replace("{track.artist}", track_data["artist_names"])
         .replace("{track.image}", track_data["track_image_url"])
         .replace("{track.url}", track_data["track_url"])
+        .replace("{playlist.public_url}", playlist_info["public_url"]).
+        replace("{playlist.name}", playlist_info["name"])
     )
 
     return html
@@ -135,10 +144,10 @@ def lambda_handler(event, context):
     try:
         html = open("index.html", "r").read()
         environment = get_environment()
-        bearer_token = get_token(environment["CLIENT_ID"], environment["SECRET_ID"])
-        tracks = get_tracks(bearer_token)
+        bearer_token = get_token(environment["CLIENT_ID"], environment["CLIENT_SECRET"])
+        tracks, playlist_info = get_tracks_and_playlist_info(bearer_token, environment["PLAYLIST_ID"])
         track_data = get_random_track_data(tracks, bearer_token)
-        html = insert_data_in_template(html, track_data)
+        html = insert_data_in_template(html, track_data, environment, playlist_info)
 
         return {
             "headers": {"Content-Type": "text/html"},
