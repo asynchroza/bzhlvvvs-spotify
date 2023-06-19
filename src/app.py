@@ -4,7 +4,6 @@ import requests
 from base64 import b64encode
 from dotenv import load_dotenv
 from random import random
-from typing import Union
 
 # container won't copy .env file
 load_dotenv(".env.spotify")
@@ -25,6 +24,7 @@ def _get(obj: dict, key: str, throw: bool = False, default_value: str = "") -> s
     Returns:
         Either an empty string or the default_value which has been passed
     """
+
     try: 
         return obj[key]
     except Exception as e:
@@ -34,16 +34,13 @@ def _get(obj: dict, key: str, throw: bool = False, default_value: str = "") -> s
 
 
 
-def get_environment() -> dict[str, None]:
+def get_environment() -> dict[str, str]:
     """Loads all environment variables needed for making calls
     and updating the html template.
 
     Implementation:
         Some of the variables are loaded using get() because they're
         not mission critical, the template will simply not render the corresponding elements.
-
-    Returns:
-        dict[str, None]
     """
     
     return {
