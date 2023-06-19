@@ -11,23 +11,26 @@ load_dotenv(".env.spotify")
 
 SPOTIFY_API = "https://api.spotify.com"
 
-def _get(obj: dict, key: str, throw: bool = False) -> Union[str, None]:
+def _get(obj: dict, key: str, throw: bool = False, default_value: str = "") -> str:
     """Utility function for fetching an item from a dictionary.
     Throws a well formatted exception if key is not found and throw argument is True.
     Otherwise, it returns None.
 
     Args:
+        default_value (str, optional): Default value to be returned if key is not found. 
+        Redundant if throw is True.
+
         throw (bool, optional): Throw exception if key is not found
 
     Returns:
-        Union[str, None]
+        Either an empty string or the default_value which has been passed
     """
     try: 
         return obj[key]
     except Exception as e:
         if throw:
             raise Exception(f"{str(e)} key was not found in dictionary")
-        return None
+        return default_value 
 
 
 
@@ -133,10 +136,12 @@ def insert_data_in_template(html: str, track_data: dict, environment: dict, play
         .replace("{track.artist}", track_data["artist_names"])
         .replace("{track.image}", track_data["track_image_url"])
         .replace("{track.url}", track_data["track_url"])
-        .replace("{playlist.public_url}", playlist_info["public_url"]).
-        replace("{playlist.name}", playlist_info["name"]).
-        replace("{index.title}", environment["TITLE"])
+        .replace("{playlist.public_url}", playlist_info["public_url"])
+        .replace("{playlist.name}", playlist_info["name"])
+        .replace("{index.title}", environment["TITLE"])
         .replace("{index.favicon}", environment["FAVICON_URL"])
+        .replace("{icon.github}", environment["GITHUB"])
+        .replace("{icon.linkedin}", environment["LINKEDIN"])
     )
 
     return html

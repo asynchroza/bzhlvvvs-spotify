@@ -139,20 +139,24 @@
             window.location.href = url;
         }
 
-        const playButton = document.querySelector('.icon')
-        playButton.addEventListener('click', () => {
-            redirectTo("{track.url}");
-        })
+        const chainRedirectOrHideElem = (elem, url) => {
+            if (url === ""){
+                elem.style.display = "none";
+                return;
+            }
+
+            elem.addEventListener('click', () => {
+                redirectTo(url);
+            })
+        }
 
         const github = document.querySelector('.github');
-        github.addEventListener('click', () => {
-            redirectTo("https://github.com/asynchroza/bzhlvvvs-spotify")
-        })
-
+        const playButton = document.querySelector('.icon');
         const linkedin = document.querySelector('.linkedin');
-        linkedin.addEventListener('click', () => {
-            redirectTo("https://www.linkedin.com/in/mbozhilov/")
-        })
+
+        chainRedirectOrHideElem(github, "{icon.github}");
+        chainRedirectOrHideElem(playButton, "{track.url}");
+        chainRedirectOrHideElem(linkedin, "{icon.linkedin}")
 
         const getColorString = (color, m, threshold) => {
             // make colors brighter if below threshold
