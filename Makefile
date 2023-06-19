@@ -8,4 +8,4 @@ aws-deploy:
 
 .PHONY: pipeline-deploy
 pipeline-deploy: 
-	./write_env.sh && pip install -r src/requirements.txt && pytest && sam build --use-container && sam deploy --no-fail-on-empty-changeset --no-confirm-changeset
+	./write_env.sh && pip install -r src/requirements.txt && pytest ./src && sam build --use-container && sam deploy --no-fail-on-empty-changeset --no-confirm-changeset
