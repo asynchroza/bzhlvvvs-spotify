@@ -22,7 +22,7 @@
         padding: 0;
         margin: 0;
         width: 100%;
-        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1)), url({artist.image});
+        background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.1)), url({artist.image});
         height: 100%;
         color: white;
         display: flex;
@@ -67,6 +67,7 @@
         padding-top: 0.2rem;
         color: rgba(200, 200, 200, 0.5);
         font-size: medium;
+        text-align: center;
     }
 
     .icon {
@@ -155,15 +156,15 @@
         const increaseColorChannels = (colors) => {
             const maxChannelValue = 255;
 
-            r = Math.min(Math.round(colors[0] * 1.75), maxChannelValue);
-            g = Math.min(Math.round(colors[1] * 1.75), maxChannelValue);
-            b = Math.min(Math.round(colors[2] * 1.75), maxChannelValue);
+            r = Math.min(Math.round(colors[0] * 1.25), maxChannelValue);
+            g = Math.min(Math.round(colors[1] * 1.25), maxChannelValue);
+            b = Math.min(Math.round(colors[2] * 1.25), maxChannelValue);
 
             return [r, g, b];
         }
 
         const getColorString = (r, g, b) => {
-            if(r < 20 && g < 20 && b < 20){
+            if(r < 80 && g < 80 && b < 80){
                 return `rgb(255, 255, 255)`;
             } 
 

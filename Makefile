@@ -4,4 +4,4 @@ aws-api:
 
 .PHONY: aws-deploy
 aws-deploy:
-	rm -rf .aws-sam && sam build --use-container && sam deploy --guided
+	rm -rf .aws-sam && sam build --use-container && sam deploy
