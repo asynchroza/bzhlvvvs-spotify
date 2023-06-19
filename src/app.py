@@ -134,7 +134,9 @@ def insert_data_in_template(html: str, track_data: dict, environment: dict, play
         .replace("{track.image}", track_data["track_image_url"])
         .replace("{track.url}", track_data["track_url"])
         .replace("{playlist.public_url}", playlist_info["public_url"]).
-        replace("{playlist.name}", playlist_info["name"])
+        replace("{playlist.name}", playlist_info["name"]).
+        replace("{index.title}", environment["TITLE"])
+        .replace("{index.favicon}", environment["FAVICON_URL"])
     )
 
     return html
