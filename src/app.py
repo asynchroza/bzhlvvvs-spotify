@@ -170,7 +170,6 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "body": {
                 "message": "I'm probably in the Bahamas, right now! Excuse me for the inconvenience. I will get it fixed once I'm back. <3",
-                "playlist": "https://open.spotify.com/playlist/4qw4F3Mi3eGjXwLeKM5pYx?si=e26637db63a94ca0",
-                "error": str(e),
+                "error": str(e)
             },
         }
