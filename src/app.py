@@ -12,17 +12,17 @@ SPOTIFY_API = "https://api.spotify.com"
 
 def _get(obj: dict, key: str, throw: bool = False, default_value: str = "") -> str:
     """Utility function for fetching an item from a dictionary.
-    Throws a well formatted exception if key is not found and throw argument is True.
-    Otherwise, it returns None.
+    Throws a well formatted exception if key is not found and `throw` argument is `True`.
+    Otherwise, it either returns the passed `default_value` or an `empty string`.
 
     Args:
-        default_value (str, optional): Default value to be returned if key is not found. 
-        Redundant if throw is True.
+        `default_value` (str, optional): Default value to be returned if key is not found. 
+        Redundant if `throw` is `True`.
 
-        throw (bool, optional): Throw exception if key is not found
+        `throw` (bool, optional): Throw exception if key is not found
 
     Returns:
-        Either an empty string or the default_value which has been passed
+        Either `default_value` or an `empty_string`
     """
 
     try: 
@@ -61,7 +61,7 @@ def get_token(CLIENT_ID: str, CLIENT_SECRET: str) -> str:
     return response["access_token"]
 
 
-def get_tracks_and_playlist_info(bearer_token: str, PLAYLIST_ID: str) -> tuple[str, str, str]:
+def get_tracks_and_playlist_info(bearer_token: str, PLAYLIST_ID: str) -> tuple[str, dict[str, str]]:
     playlists_url = f"{SPOTIFY_API}/v1/playlists/{PLAYLIST_ID}"
 
     headers = {"Authorization": f"Bearer {bearer_token}"}
@@ -77,7 +77,7 @@ def get_tracks_and_playlist_info(bearer_token: str, PLAYLIST_ID: str) -> tuple[s
     }
 
 
-def get_artist_names(artists):
+def get_artist_names(artists) -> str:
     artist_names = [artist["name"] for artist in artists]
 
     # Concatenate the names into a comma-separated string
@@ -86,14 +86,14 @@ def get_artist_names(artists):
     return artist_names_string
 
 
-def get_artist_image(artist_url, bearer_token):
+def get_artist_image(artist_url, bearer_token) -> str:
     headers = {"Authorization": f"Bearer {bearer_token}"}
 
     response = json.loads(requests.get(artist_url, headers=headers).content)
     return response["images"][0]["url"]
 
 
-def get_random_track_data(tracks: list, bearer_token: str) -> dict:
+def get_random_track_data(tracks: list, bearer_token: str) -> dict[str, str]:
     selected_track = tracks[int(random() * len(tracks))]
 
     track_url = selected_track["track"]["external_urls"]["spotify"]
