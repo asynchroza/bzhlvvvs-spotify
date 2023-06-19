@@ -163,9 +163,9 @@
             return [r, g, b];
         }
 
-        const getColorString = (r, g, b) => {
+        const getColorString = (r, g, b, m) => {
             if(r < 80 && g < 80 && b < 80){
-                return `rgb(255, 255, 255)`;
+                return `rgb(${r + m}, ${g + m}, ${g + m})`;
             } 
 
             return `rgb(${r}, ${g}, ${b})`;
@@ -185,15 +185,16 @@
 
         const colorThief = new ColorThief();
         const img = document.querySelector('.song-image');
+        const colorMultiplier = 80;
 
         if (img.complete) {
             const color = colorThief.getColor(img);
-            const colorString = getColorString(...increaseColorChannels(color));
+            const colorString = getColorString(...increaseColorChannels(color), colorMultiplier);
             changeIconColors(colorString);
         } else {
             img.addEventListener('load', function() {
             const color = colorThief.getColor(img);
-            const colorString = getColorString(...increaseColorChannels(color));
+            const colorString = getColorString(...increaseColorChannels(color), colorMultiplier);
             changeIconColors(colorString);
             })
         }
