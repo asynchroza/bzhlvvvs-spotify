@@ -16,6 +16,7 @@ def test_insert_data_in_template():
             <link rel="icon" href="{index.favicon}">
             <a href="{icon.github}">GitHub</a>
             <a href="{icon.linkedin}">LinkedIn</a>
+            <a href="{track.addedBy.url}">{track.addedBy.name}</a>
         </body>
     </html>
     """
@@ -26,6 +27,8 @@ def test_insert_data_in_template():
         "artist_names": "Artist Name",
         "track_image_url": "https://example.com/track_image.jpg",
         "track_url": "https://example.com/track_url",
+        "added_by_public_url": "https://example.com/user",
+        "added_by_name": "Tony Montana"
     }
 
     playlist_info = {
@@ -54,6 +57,7 @@ def test_insert_data_in_template():
             <link rel="icon" href="https://example.com/favicon.ico">
             <a href="https://github.com/example">GitHub</a>
             <a href="https://linkedin.com/example">LinkedIn</a>
+            <a href="https://example.com/user">Tony Montana</a>
         </body>
     </html>
     """
