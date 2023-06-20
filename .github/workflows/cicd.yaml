@@ -11,6 +11,7 @@ jobs:
       env:
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        LAMBDA_URL: https://bzhlvvvs.com
         TITLE: "@bzhlvvvs"
         FAVICON_URL: https://personal-misho.s3.eu-north-1.amazonaws.com/favicon.ico
         PLAYLIST_ID: 4qw4F3Mi3eGjXwLeKM5pYx
