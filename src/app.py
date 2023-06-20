@@ -4,6 +4,7 @@ import requests
 from base64 import b64encode
 from dotenv import load_dotenv
 from random import random
+from typing import Any
 
 # container won't copy .env file
 load_dotenv(".env.spotify")
@@ -149,7 +150,7 @@ def insert_data_in_template(html: str, track_data: dict, environment: dict, play
     return html
 
 
-def lambda_handler(event, context):
+def lambda_handler(event, context) -> dict[str, Any]:
     try:
         html = open("index.html", "r").read()
         environment = get_environment()
