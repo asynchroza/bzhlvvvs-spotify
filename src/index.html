@@ -70,10 +70,6 @@
         text-align: center;
     }
 
-    .icon {
-        padding-top: 1rem;
-    }
-
     .icon:hover {
         cursor: pointer;
     }
@@ -109,6 +105,19 @@
         font-size: large;
     }
 
+    .added-by-link {
+        text-decoration: none;
+    }
+
+    .added-by {
+        text-align: center;
+        color: rgba(200, 200, 200, 0.5);
+        bottom: 0;
+        position: relative;
+        margin-bottom: 0;
+        margin-top: 20px;
+    }
+
     </style>
 </head>
 <body>
@@ -120,9 +129,10 @@
                 <h3 class="song-title">{track.name}</h3>
                 <p class="artists">{track.artist}</p>
             </div>
-            <div class="icon">
+            <div class="icon" style="margin-top: 10px;">
                 <i class="fa-solid fa-play fa-2x"></i>
             </div>
+            <p class="added-by">Added by <a class="added-by-link" href="{track.addedBy.url}">{track.addedBy.name}</a></p>
         </div>
         <div class="linkedin">
             <i class="fa-brands fa-linkedin fa-3x"></i>
@@ -170,12 +180,14 @@
         const changeIconColors = (colorString) => {
             // const text = document.querySelector('.description');
             const playlistLink = document.querySelector('.playlist-link');
+            const addedByLink = document.querySelector('.added-by-link');
 
             linkedin.style.color = colorString;
             github.style.color = colorString;
             // text.style.color = colorString;
             playlistLink.style.color = colorString;
             playButton.style.color = colorString;
+            addedByLink.style.color = colorString;
 
         }
 

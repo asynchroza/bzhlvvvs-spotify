@@ -92,10 +92,19 @@ def get_artist_image(artist_url, bearer_token) -> str:
     response = json.loads(requests.get(artist_url, headers=headers).content)
     return response["images"][0]["url"]
 
+def get_name_of_added_by(user_api_url: str, bearer_token: str):
+    headers = {"Authorization": f'Bearer {bearer_token}'}
+
+    response = json.loads(requests.get(user_api_url, headers=headers).content)
+    return response["display_name"]
+
+
 
 def get_random_track_data(tracks: list, bearer_token: str) -> dict[str, str]:
     selected_track = tracks[int(random() * len(tracks))]
-
+    added_by_public_url = selected_track["added_by"]["external_urls"]["spotify"]
+    added_by_api_url = selected_track["added_by"]["href"]
+    added_by_name = get_name_of_added_by(added_by_api_url, bearer_token)
     track_url = selected_track["track"]["external_urls"]["spotify"]
     track_image_url = selected_track["track"]["album"]["images"][0][
         "url"
@@ -113,6 +122,8 @@ def get_random_track_data(tracks: list, bearer_token: str) -> dict[str, str]:
         "track_name": track_name,
         "artist_names": artist_names_string,
         "artist_image_url": artist_image_url,
+        "added_by_name": added_by_name,
+        "added_by_public_url": added_by_public_url
     }
 
     return track_data
@@ -131,6 +142,8 @@ def insert_data_in_template(html: str, track_data: dict, environment: dict, play
         .replace("{index.favicon}", environment["FAVICON_URL"])
         .replace("{icon.github}", environment["GITHUB"])
         .replace("{icon.linkedin}", environment["LINKEDIN"])
+        .replace("{track.addedBy.url}", track_data["added_by_public_url"])
+        .replace("{track.addedBy.name}", track_data["added_by_name"])
     )
 
     return html
