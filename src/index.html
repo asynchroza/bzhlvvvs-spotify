@@ -70,10 +70,6 @@
         text-align: center;
     }
 
-    .icon {
-        padding-top: 1rem;
-    }
-
     .icon:hover {
         cursor: pointer;
     }
@@ -109,6 +105,12 @@
         font-size: large;
     }
 
+    .added-by {
+        margin-bottom: 30px;
+        text-align: center;
+        color: rgba(200, 200, 200, 0.5)
+    }
+
     </style>
 </head>
 <body>
@@ -119,6 +121,7 @@
             <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 1.5rem; margin-left: 0.75rem; margin-right: 0.75rem;">
                 <h3 class="song-title">{track.name}</h3>
                 <p class="artists">{track.artist}</p>
+                <p class="added-by">Added by <a href="{track.addedBy.url}">{track.addedBy.name}</a></p>
             </div>
             <div class="icon">
                 <i class="fa-solid fa-play fa-2x"></i>
