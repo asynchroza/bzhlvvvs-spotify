@@ -1,4 +1,4 @@
-import json
+from json import dumps, loads
 from os import environ
 import requests
 from base64 import b64encode
@@ -54,7 +54,7 @@ def get_token(CLIENT_ID: str, CLIENT_SECRET: str) -> str:
 
     payload = {"grant_type": "client_credentials"}
 
-    response = json.loads(
+    response = loads(
         requests.post(token_url, data=payload, headers=headers).content
     )
 
@@ -66,7 +66,7 @@ def get_tracks_and_playlist_info(bearer_token: str, PLAYLIST_ID: str) -> tuple[s
 
     headers = {"Authorization": f"Bearer {bearer_token}"}
 
-    response = json.loads(requests.get(playlists_url, headers=headers).content)
+    response = loads(requests.get(playlists_url, headers=headers).content)
     items = response["tracks"]["items"]
     playlist_public_url = response["external_urls"]["spotify"]
     playlist_name = response["name"]
@@ -89,13 +89,13 @@ def get_artist_names(artists) -> str:
 def get_artist_image(artist_url, bearer_token) -> str:
     headers = {"Authorization": f"Bearer {bearer_token}"}
 
-    response = json.loads(requests.get(artist_url, headers=headers).content)
+    response = loads(requests.get(artist_url, headers=headers).content)
     return response["images"][0]["url"]
 
 def get_name_of_added_by(user_api_url: str, bearer_token: str):
     headers = {"Authorization": f'Bearer {bearer_token}'}
 
-    response = json.loads(requests.get(user_api_url, headers=headers).content)
+    response = loads(requests.get(user_api_url, headers=headers).content)
     return response["display_name"]
 
 
@@ -170,8 +170,8 @@ def lambda_handler(event, context):
         return {
             "headers": {"Content-Type": "application/json"},
             "statusCode": 500,
-            "body": {
+            "body": dumps({
                 "message": "I'm probably in the Bahamas, right now! Excuse me for the inconvenience. I will get it fixed once I'm back. <3",
                 "error": str(e)
-            },
+            }),
         }
