@@ -61,6 +61,10 @@ def get_token(CLIENT_ID: str, CLIENT_SECRET: str) -> str:
 
 
 def fetch_playlist(bearer_token: str, PLAYLIST_ID: str):
+    # * it seems that the tracks endpoint includes all of the info we need
+    # ? can we drop the initial request and just do the while loop using /tracks
+    # TODO: refactor
+
     playlists_url = f"{SPOTIFY_API}/v1/playlists/{PLAYLIST_ID}"
 
     headers = {"Authorization": f"Bearer {bearer_token}"}
