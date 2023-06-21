@@ -11,13 +11,14 @@ load_dotenv(".env.spotify")
 
 SPOTIFY_API = "https://api.spotify.com"
 
+
 def _get(obj: dict, key: str, throw: bool = False, default_value: str = "") -> str:
     """Utility function for fetching an item from a dictionary.
     Throws a well formatted exception if key is not found and `throw` argument is `True`.
     Otherwise, it either returns the passed `default_value` or an `empty string`.
 
     Args:
-        `default_value` (str, optional): Default value to be returned if key is not found. 
+        `default_value` (str, optional): Default value to be returned if key is not found.
         Redundant if `throw` is `True`.
 
         `throw` (bool, optional): Throw exception if key is not found
@@ -26,13 +27,12 @@ def _get(obj: dict, key: str, throw: bool = False, default_value: str = "") -> s
         Either `default_value` or an `empty_string`
     """
 
-    try: 
+    try:
         return obj[key]
     except Exception as e:
         if throw:
             raise Exception(f"{str(e)} key was not found in dictionary")
-        return default_value 
-
+        return default_value
 
 
 def get_environment() -> dict[str, str]:
@@ -55,27 +55,61 @@ def get_token(CLIENT_ID: str, CLIENT_SECRET: str) -> str:
 
     payload = {"grant_type": "client_credentials"}
 
-    response = loads(
-        requests.post(token_url, data=payload, headers=headers).content
-    )
+    response = loads(requests.post(token_url, data=payload, headers=headers).content)
 
     return response["access_token"]
 
 
-def get_tracks_and_playlist_info(bearer_token: str, PLAYLIST_ID: str) -> tuple[str, dict[str, str]]:
+def fetch_playlist(bearer_token: str, PLAYLIST_ID: str):
     playlists_url = f"{SPOTIFY_API}/v1/playlists/{PLAYLIST_ID}"
 
     headers = {"Authorization": f"Bearer {bearer_token}"}
 
-    response = loads(requests.get(playlists_url, headers=headers).content)
-    items = response["tracks"]["items"]
-    playlist_public_url = response["external_urls"]["spotify"]
-    playlist_name = response["name"]
+    limit = 100
+    offset = 0
+    all_songs = []
+    response = requests.get(playlists_url, headers=headers)
 
-    return items, {
-        "public_url": playlist_public_url,
-        "name": playlist_name
-    }
+    if response.status_code != 200:
+        raise Exception("Couldn't fetch information about playlist")
+
+    data = response.json()
+    songs = data["tracks"]["items"]
+    all_songs.extend(songs)
+    total = data["tracks"]["total"]
+    offset = len(songs)
+
+    playlist_tracks_url = f"{playlists_url}/tracks"
+
+    while True:
+        if len(songs) < limit or offset >= total:
+            break
+
+        params = {"limit": limit, "offset": offset}
+        response = requests.get(playlist_tracks_url, params=params, headers=headers)
+
+        if response.status_code == 200:
+            songs = response.json()["items"]
+            all_songs.extend(songs)
+            offset += len(songs)
+
+        else:
+            raise Exception(response)
+
+    data["tracks"]["items"] = all_songs
+    return data
+
+
+def get_tracks_and_playlist_info(
+    bearer_token: str, PLAYLIST_ID: str
+) -> tuple[str, dict[str, str]]:
+    playlist = fetch_playlist(bearer_token, PLAYLIST_ID)
+
+    items = playlist["tracks"]["items"]
+    playlist_public_url = playlist["external_urls"]["spotify"]
+    playlist_name = playlist["name"]
+
+    return items, {"public_url": playlist_public_url, "name": playlist_name}
 
 
 def get_artist_names(artists) -> str:
@@ -93,12 +127,12 @@ def get_artist_image(artist_url, bearer_token) -> str:
     response = loads(requests.get(artist_url, headers=headers).content)
     return response["images"][0]["url"]
 
+
 def get_name_of_added_by(user_api_url: str, bearer_token: str):
-    headers = {"Authorization": f'Bearer {bearer_token}'}
+    headers = {"Authorization": f"Bearer {bearer_token}"}
 
     response = loads(requests.get(user_api_url, headers=headers).content)
     return response["display_name"]
-
 
 
 def get_random_track_data(tracks: list, bearer_token: str) -> dict[str, str]:
@@ -124,13 +158,15 @@ def get_random_track_data(tracks: list, bearer_token: str) -> dict[str, str]:
         "artist_names": artist_names_string,
         "artist_image_url": artist_image_url,
         "added_by_name": added_by_name,
-        "added_by_public_url": added_by_public_url
+        "added_by_public_url": added_by_public_url,
     }
 
     return track_data
 
 
-def insert_data_in_template(html: str, track_data: dict, environment: dict, playlist_info: dict) -> str:
+def insert_data_in_template(
+    html: str, track_data: dict, environment: dict, playlist_info: dict
+) -> str:
     html = (
         html.replace("{artist.image}", track_data["artist_image_url"])
         .replace("{track.name}", track_data["track_name"])
@@ -155,7 +191,9 @@ def lambda_handler(event, context) -> dict[str, Any]:
         html = open("index.html", "r").read()
         environment = get_environment()
         bearer_token = get_token(environment["CLIENT_ID"], environment["CLIENT_SECRET"])
-        tracks, playlist_info = get_tracks_and_playlist_info(bearer_token, environment["PLAYLIST_ID"])
+        tracks, playlist_info = get_tracks_and_playlist_info(
+            bearer_token, environment["PLAYLIST_ID"]
+        )
         track_data = get_random_track_data(tracks, bearer_token)
         html = insert_data_in_template(html, track_data, environment, playlist_info)
 
@@ -171,8 +209,10 @@ def lambda_handler(event, context) -> dict[str, Any]:
         return {
             "headers": {"Content-Type": "application/json"},
             "statusCode": 500,
-            "body": dumps({
-                "message": "I'm probably in the Bahamas, right now! Excuse me for the inconvenience. I will get it fixed once I'm back. <3",
-                "error": str(e)
-            }),
+            "body": dumps(
+                {
+                    "message": "I'm probably in the Bahamas, right now! Excuse me for the inconvenience. I will get it fixed once I'm back. <3",
+                    "error": str(e),
+                }
+            ),
         }
