@@ -60,18 +60,14 @@ def get_token(CLIENT_ID: str, CLIENT_SECRET: str) -> str:
     return response["access_token"]
 
 
-def fetch_playlist(bearer_token: str, PLAYLIST_ID: str):
-    # * it seems that the tracks endpoint includes all of the info we need
-    # ? can we drop the initial request and just do the while loop using /tracks
-    # TODO: refactor
-
+def fetch_playlist(bearer_token: str, PLAYLIST_ID: str) -> dict[str, Any]:
     playlists_url = f"{SPOTIFY_API}/v1/playlists/{PLAYLIST_ID}"
-
     headers = {"Authorization": f"Bearer {bearer_token}"}
-
     limit = 100
     offset = 0
     all_songs = []
+    
+    # initial request is needed for fetching base info about the playlist
     response = requests.get(playlists_url, headers=headers)
 
     if response.status_code != 200:
@@ -98,7 +94,7 @@ def fetch_playlist(bearer_token: str, PLAYLIST_ID: str):
             offset += len(songs)
 
         else:
-            raise Exception(response)
+            raise Exception("Couldn't fetch next page of tracks")
 
     data["tracks"]["items"] = all_songs
     return data
