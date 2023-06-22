@@ -15,7 +15,7 @@ jobs:
         TITLE: "@bzhlvvvs"
         FAVICON_URL: https://personal-misho.s3.eu-north-1.amazonaws.com/favicon.ico
         PLAYLIST_ID: 4qw4F3Mi3eGjXwLeKM5pYx
-        LINKEDIN: https://www.linkedin.com/me/mbozhilov/
+        LINKEDIN: https://www.linkedin.com/in/mbozhilov/
         GITHUB: https://github.com/asynchroza/bzhlvvvs-spotify
       steps:
         - uses: actions/checkout@v2

@@ -1,6 +1,7 @@
 from src.app import insert_data_in_template, _get
 import pytest
 
+
 def test_insert_data_in_template():
     html = """
     <html>
@@ -28,7 +29,7 @@ def test_insert_data_in_template():
         "track_image_url": "https://example.com/track_image.jpg",
         "track_url": "https://example.com/track_url",
         "added_by_public_url": "https://example.com/user",
-        "added_by_name": "Tony Montana"
+        "added_by_name": "Tony Montana",
     }
 
     playlist_info = {
@@ -64,6 +65,7 @@ def test_insert_data_in_template():
 
     result = insert_data_in_template(html, track_data, environment, playlist_info)
     assert result == expected_result
+
 
 def test_get():
     obj = {
