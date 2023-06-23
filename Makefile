@@ -12,3 +12,7 @@ pipeline-deploy:
 	pytest ./src && sam build --use-container && \
 	sam deploy --no-fail-on-empty-changeset --no-confirm-changeset && \
 	./health_check.sh
+
+.PHONY: install-deps
+install-deps:
+	cd ./src && pip install -r requirements.txt -t ./ --upgrade
