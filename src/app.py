@@ -4,7 +4,7 @@ import requests
 from base64 import b64encode
 from dotenv import load_dotenv
 from random import random
-from typing import Any
+from typing import Any, Union
 
 # container won't copy .env file
 load_dotenv(".env.spotify")
@@ -60,56 +60,23 @@ def get_token(CLIENT_ID: str, CLIENT_SECRET: str) -> str:
     return response["access_token"]
 
 
-def fetch_playlist(bearer_token: str, PLAYLIST_ID: str) -> dict[str, Any]:
-    playlists_url = f"{SPOTIFY_API}/v1/playlists/{PLAYLIST_ID}"
-    headers = {"Authorization": f"Bearer {bearer_token}"}
-    limit = 100
-    offset = 0
-    all_songs = []
-    
-    # initial request is needed for fetching base info about the playlist
-    response = requests.get(playlists_url, headers=headers)
-
-    if response.status_code != 200:
-        raise Exception("Couldn't fetch information about playlist")
-
-    data = response.json()
-    songs = data["tracks"]["items"]
-    all_songs.extend(songs)
-    total = data["tracks"]["total"]
-    offset = len(songs)
-
-    playlist_tracks_url = f"{playlists_url}/tracks"
-
-    while True:
-        if len(songs) < limit or offset >= total:
-            break
-
-        params = {"limit": limit, "offset": offset}
-        response = requests.get(playlist_tracks_url, params=params, headers=headers)
-
-        if response.status_code == 200:
-            songs = response.json()["items"]
-            all_songs.extend(songs)
-            offset += len(songs)
-
-        else:
-            raise Exception("Couldn't fetch next page of tracks")
-
-    data["tracks"]["items"] = all_songs
-    return data
-
-
-def get_tracks_and_playlist_info(
+def get_playlist_info(
     bearer_token: str, PLAYLIST_ID: str
-) -> tuple[str, dict[str, str]]:
-    playlist = fetch_playlist(bearer_token, PLAYLIST_ID)
+) -> dict[str, Union[str, Any]]:
+    playlists_url = f"{SPOTIFY_API}/v1/playlists/{PLAYLIST_ID}?fields=tracks(total),external_urls(spotify), name"  # noqa: E501
+    headers = {"Authorization": f"Bearer {bearer_token}"}
 
-    items = playlist["tracks"]["items"]
-    playlist_public_url = playlist["external_urls"]["spotify"]
-    playlist_name = playlist["name"]
+    # initial request is needed for fetching base info about the playlist
+    response = loads(requests.get(playlists_url, headers=headers).content)
+    playlists_public_url = response["external_urls"]["spotify"]
+    playlist_name = response["name"]
+    total_tracks = response["tracks"]["total"]
 
-    return items, {"public_url": playlist_public_url, "name": playlist_name}
+    return {
+        "public_url": playlists_public_url,
+        "name": playlist_name,
+        "total_tracks": total_tracks,
+    }
 
 
 def get_artist_names(artists) -> str:
@@ -128,18 +95,27 @@ def get_artist_image(artist_url, bearer_token) -> str:
     return response["images"][0]["url"]
 
 
-def get_name_of_added_by(user_api_url: str, bearer_token: str):
+def get_display_name_of_added_by(user_api_url: str, bearer_token: str):
     headers = {"Authorization": f"Bearer {bearer_token}"}
 
     response = loads(requests.get(user_api_url, headers=headers).content)
     return response["display_name"]
 
 
-def get_random_track_data(tracks: list, bearer_token: str) -> dict[str, str]:
-    selected_track = tracks[int(random() * len(tracks))]
+def get_random_track_data(
+    total_tracks: int, bearer_token: str, PLAYLIST_ID: str
+) -> dict[str, str]:
+    selected_track = int(random() * total_tracks)
+    playlists_url = f"{SPOTIFY_API}/v1/playlists/{PLAYLIST_ID}/tracks?fields=items(added_by(external_urls, href), href, track(album(external_urls, images), name, images, external_urls, artists(name, href)))&limit={1}&offset={selected_track}"  # noqa: E501
+
+    headers = {"Authorization": f"Bearer {bearer_token}"}
+    selected_track = loads(requests.get(playlists_url, headers=headers).content)[
+        "items"
+    ][0]
+
     added_by_public_url = selected_track["added_by"]["external_urls"]["spotify"]
     added_by_api_url = selected_track["added_by"]["href"]
-    added_by_name = get_name_of_added_by(added_by_api_url, bearer_token)
+    added_by_name = get_display_name_of_added_by(added_by_api_url, bearer_token)
     track_url = selected_track["track"]["external_urls"]["spotify"]
     track_image_url = selected_track["track"]["album"]["images"][0][
         "url"
@@ -151,7 +127,7 @@ def get_random_track_data(tracks: list, bearer_token: str) -> dict[str, str]:
         selected_track["track"]["artists"][0]["href"], bearer_token
     )
 
-    track_data = {
+    return {
         "track_url": track_url,
         "track_image_url": track_image_url,
         "track_name": track_name,
@@ -160,8 +136,6 @@ def get_random_track_data(tracks: list, bearer_token: str) -> dict[str, str]:
         "added_by_name": added_by_name,
         "added_by_public_url": added_by_public_url,
     }
-
-    return track_data
 
 
 def insert_data_in_template(
@@ -191,10 +165,12 @@ def lambda_handler(event, context) -> dict[str, Any]:
         html = open("index.html", "r").read()
         environment = get_environment()
         bearer_token = get_token(environment["CLIENT_ID"], environment["CLIENT_SECRET"])
-        tracks, playlist_info = get_tracks_and_playlist_info(
-            bearer_token, environment["PLAYLIST_ID"]
+
+        playlist_info = get_playlist_info(bearer_token, environment["PLAYLIST_ID"])
+
+        track_data = get_random_track_data(
+            playlist_info["total_tracks"], bearer_token, environment["PLAYLIST_ID"]
         )
-        track_data = get_random_track_data(tracks, bearer_token)
         html = insert_data_in_template(html, track_data, environment, playlist_info)
 
         return {
