@@ -4,6 +4,7 @@ on:
         - main
       paths:
         - 'src/**'
+        - '.github/workflows/**'
         # - '!src/tests/**'
 jobs:
     cicd:
