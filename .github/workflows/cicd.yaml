@@ -14,7 +14,7 @@ jobs:
         LAMBDA_URL: https://bzhlvvvs.com
         TITLE: "@bzhlvvvs"
         FAVICON_URL: https://personal-misho.s3.eu-north-1.amazonaws.com/favicon.ico
-        PLAYLIST_ID: 4qw4F3Mi3eGjXwLeKM5pYx
+        PLAYLIST_ID: 05X2h4E9oMUJPywfgT1gqn 
         LINKEDIN: https://www.linkedin.com/in/mbozhilov/
         GITHUB: https://github.com/asynchroza/bzhlvvvs-spotify
       steps:
