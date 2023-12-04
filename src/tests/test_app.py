@@ -77,9 +77,9 @@ def test_get():
     result = _get(obj, "key1")
     assert result == "value1"
 
-    # should return empty string because throw is implicitly False
+    # should return None because throw is implicitly False
     result = _get(obj, "key3")
-    assert result == ""
+    assert result == None
 
     # should throw when key is missing
     with pytest.raises(Exception) as exc_info:
