@@ -12,7 +12,7 @@ load_dotenv(".env.spotify")
 SPOTIFY_API = "https://api.spotify.com"
 
 
-def _get(obj: dict, key: str, throw: bool = False, default_value: str = "") -> str:
+def _get(obj: dict, key: str, throw: bool = False, default_value = None) -> str:
     """Utility function for fetching an item from a dictionary.
     Throws a well formatted exception if key is not found and `throw` argument is `True`.
     Otherwise, it either returns the passed `default_value` or an `empty string`.
@@ -37,10 +37,10 @@ def _get(obj: dict, key: str, throw: bool = False, default_value: str = "") -> s
 
 def get_environment() -> dict[str, str]:
     return {
-        "CLIENT_ID": _get(environ, "CLIENT_ID", True),
-        "CLIENT_SECRET": _get(environ, "CLIENT_SECRET", True),
-        "PLAYLIST_ID": _get(environ, "PLAYLIST_ID", True),
-        "TITLE": _get(environ, "TITLE", True),
+        "CLIENT_ID": _get(environ, "CLIENT_ID", throw=True),
+        "CLIENT_SECRET": _get(environ, "CLIENT_SECRET", throw=True),
+        "PLAYLIST_ID": _get(environ, "PLAYLIST_ID", throw=True),
+        "TITLE": _get(environ, "TITLE", throw=True),
         "LINKEDIN": _get(environ, "LINKEDIN"),
         "GITHUB": _get(environ, "GITHUB"),
         "FAVICON_URL": _get(environ, "FAVICON_URL"),
