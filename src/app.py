@@ -43,6 +43,7 @@ def get_environment() -> dict[str, str]:
         "TITLE": _get(environ, "TITLE", throw=True),
         "LINKEDIN": _get(environ, "LINKEDIN"),
         "GITHUB": _get(environ, "GITHUB"),
+        "SOUNDCLOUD": _get(environ, "SOUNDCLOUD"),
         "FAVICON_URL": _get(environ, "FAVICON_URL"),
     }
 
@@ -152,6 +153,7 @@ def insert_data_in_template(
         .replace("{index.title}", environment["TITLE"])
         .replace("{index.favicon}", environment["FAVICON_URL"])
         .replace("{icon.github}", environment["GITHUB"])
+        .replace("{icon.soundcloud}", environ["SOUNDCLOUD"])
         .replace("{icon.linkedin}", environment["LINKEDIN"])
         .replace("{track.addedBy.url}", track_data["added_by_public_url"])
         .replace("{track.addedBy.name}", track_data["added_by_name"])

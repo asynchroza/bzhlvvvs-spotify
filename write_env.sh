@@ -9,3 +9,4 @@ echo "FAVICON_URL=\"$FAVICON_URL\"" >> $DIR
 echo "PLAYLIST_ID=\"$PLAYLIST_ID\"" >> $DIR
 echo "LINKEDIN=\"$LINKEDIN\"" >> $DIR
 echo "GITHUB=\"$GITHUB\"" >> $DIR
+echo "SOUNDCLOUD=\"$SOUNDCLOUD\"" >> $DIR

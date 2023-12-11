@@ -1,42 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{index.title}</title>
-    <script src="https://kit.fontawesome.com/f681b4ab71.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/f681b4ab71.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    <link rel="icon" type="image/x-icon" href="{index.favicon}"/>
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="{index.favicon}" />
 
     <style>
+      body {
+        font-family: "Poppins";
+      }
 
-    body {
-        font-family: 'Poppins';
-    }
-
-    a {
+      a {
         color: gray;
         text-decoration: none;
-    }
+      }
 
-    #landing-wrapper {
+      #landing-wrapper {
         left: 0;
         top: 0;
         position: absolute;
         padding: 0;
         margin: 0;
         width: 100%;
-        background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 1)), url({artist.image});
+        background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 1)),
+          url({artist.image});
         height: 100%;
         color: white;
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: -10
-    }
+        z-index: -10;
+      }
 
-    .player {
+      .player {
         background-color: rgba(0, 0, 0, 0.55);
         height: 70vh;
         width: 70vw;
@@ -46,174 +52,207 @@
         justify-content: center;
         align-items: center;
         margin-top: -100px;
-    }
+      }
 
-    .player {
+      .player {
         width: 360px;
         height: 530px;
-    }
-    
+      }
 
-    .song-image {
+      .song-image {
         height: 220px;
         width: 220px;
-    }
+      }
 
-    .song-title {
+      .song-title {
         margin: 0;
         font-weight: 500;
         font-size: large;
         word-wrap: break-word;
         text-align: center;
-    }
+      }
 
-    .artists {
+      .artists {
         margin: 0;
         padding-top: 0.2rem;
         color: rgba(200, 200, 200, 0.5);
         font-size: medium;
         text-align: center;
-    }
+      }
 
-    .icon:hover {
+      .icon:hover {
         cursor: pointer;
-    }
+      }
 
-    .github {
+      .github {
         position: absolute;
         bottom: 50px;
         right: 50px;
-    }
+      }
 
-    .github:hover {
+      .github:hover {
         cursor: pointer;
-    }
+      }
 
-    .linkedin {
+      .linkedin {
         position: absolute;
         bottom: 50px;
         left: 50px;
-    }
+      }
 
-    .linkedin:hover {
+      .soundcloud {
+        position: absolute;
+        bottom: 50px;
+      }
+
+      .linkedin:hover {
         cursor: pointer;
-    }
+      }
 
-    .description {
+      .description {
         margin-top: 0;
         margin-bottom: 15px;
         text-align: center;
-        color: rgba(200, 200, 200, 0.5)
-    }
+        color: rgba(200, 200, 200, 0.5);
+      }
 
-    .playlist-link {
+      .playlist-link {
         text-decoration: none;
         font-size: large;
-    }
+      }
 
-    .added-by-link {
+      .added-by-link {
         text-decoration: none;
-    }
+      }
 
-    .added-by {
+      .added-by {
         text-align: center;
         color: rgba(200, 200, 200, 0.5);
         bottom: 0;
         position: relative;
         margin-bottom: 0px;
         margin-top: 20px;
-    }
-
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="landing-wrapper">
-        <div class="player">
-            <p class="description">Selected for you <br/> from <a class="playlist-link" href="{playlist.public_url}">{playlist.name}</a></p>
-            <img class="song-image" src="{track.image}" crossorigin="anonymous"/>
-            <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 1.5rem; margin-left: 0.75rem; margin-right: 0.75rem;">
-                <h3 class="song-title">{track.name}</h3>
-                <p class="artists">{track.artist}</p>
-            </div>
-            <div class="icon" style="margin-top: 10px;">
-                <i class="fa-solid fa-play fa-2x"></i>
-            </div>
-            <p class="added-by">Added by <a class="added-by-link" href="{track.addedBy.url}">{track.addedBy.name}</a></p>
+      <div class="player">
+        <p class="description">
+          Selected for you <br />
+          from
+          <a class="playlist-link" href="{playlist.public_url}"
+            >{playlist.name}</a
+          >
+        </p>
+        <img class="song-image" src="{track.image}" crossorigin="anonymous" />
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 1.5rem;
+            margin-left: 0.75rem;
+            margin-right: 0.75rem;
+          "
+        >
+          <h3 class="song-title">{track.name}</h3>
+          <p class="artists">{track.artist}</p>
         </div>
-        <div class="linkedin">
-            <i class="fa-brands fa-linkedin fa-3x"></i>
+        <div class="icon" style="margin-top: 10px">
+          <i class="fa-solid fa-play fa-2x"></i>
         </div>
-        <div class="github">
-            <i class="fa-brands fa-github fa-3x"></i>
-        </div>
+        <p class="added-by">
+          Added by
+          <a class="added-by-link" href="{track.addedBy.url}"
+            >{track.addedBy.name}</a
+          >
+        </p>
+      </div>
+      <div class="linkedin">
+        <i class="fa-brands fa-linkedin fa-3x"></i>
+      </div>
+      <div class="soundcloud">
+        <i class="fa-brands fa-soundcloud fa-3x"></i>
+      </div>
+      <div class="github">
+        <i class="fa-brands fa-github fa-3x"></i>
+      </div>
     </div>
     <!-- <img class="hackaround" src="{artist.image}" crossorigin="anonymous" hidden/> -->
-</body>
-    <script>
+  </body>
+  <script>
+    const redirectTo = (url) => {
+      window.location.href = url;
+    };
 
-        const redirectTo = (url) => {
-            window.location.href = url;
-        }
+    const chainRedirectOrHideElem = (elem, url) => {
+      if (url === "") {
+        elem.style.display = "none";
+        return;
+      }
 
-        const chainRedirectOrHideElem = (elem, url) => {
-            if (url === ""){
-                elem.style.display = "none";
-                return;
-            }
+      elem.addEventListener("click", () => {
+        redirectTo(url);
+      });
+    };
 
-            elem.addEventListener('click', () => {
-                redirectTo(url);
-            })
-        }
+    const github = document.querySelector(".github");
+    const playButton = document.querySelector(".icon");
+    const linkedin = document.querySelector(".linkedin");
+    const soundcloud = document.querySelector(".soundcloud");
 
-        const github = document.querySelector('.github');
-        const playButton = document.querySelector('.icon');
-        const linkedin = document.querySelector('.linkedin');
+    chainRedirectOrHideElem(github, "{icon.github}");
+    chainRedirectOrHideElem(playButton, "{track.url}");
+    chainRedirectOrHideElem(linkedin, "{icon.linkedin}");
+    chainRedirectOrHideElem(soundcloud, "{icon.soundcloud}");
 
-        chainRedirectOrHideElem(github, "{icon.github}");
-        chainRedirectOrHideElem(playButton, "{track.url}");
-        chainRedirectOrHideElem(linkedin, "{icon.linkedin}")
+    const getColorString = (color, m, threshold) => {
+      // make colors brighter if below threshold
+      while (color.every((channel) => channel < threshold)) {
+        color = color.map((x) => x * m);
+      }
 
-        const getColorString = (color, m, threshold) => {
-            // make colors brighter if below threshold
-            while(color.every(channel => channel < threshold)){
-                color = color.map(x => x * m);
-            }
+      return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+    };
 
-            return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
-        }
+    const changeIconColors = (colorString) => {
+      // const text = document.querySelector('.description');
+      const playlistLink = document.querySelector(".playlist-link");
+      const addedByLink = document.querySelector(".added-by-link");
 
-        const changeIconColors = (colorString) => {
-            // const text = document.querySelector('.description');
-            const playlistLink = document.querySelector('.playlist-link');
-            const addedByLink = document.querySelector('.added-by-link');
+      linkedin.style.color = colorString;
+      github.style.color = colorString;
+      // text.style.color = colorString;
+      playlistLink.style.color = colorString;
+      playButton.style.color = colorString;
+      addedByLink.style.color = colorString;
+    };
 
-            linkedin.style.color = colorString;
-            github.style.color = colorString;
-            // text.style.color = colorString;
-            playlistLink.style.color = colorString;
-            playButton.style.color = colorString;
-            addedByLink.style.color = colorString;
+    const colorThief = new ColorThief();
+    const img = document.querySelector(".song-image");
+    const colorMultiplier = 1.5;
+    const colorThreshold = 120;
 
-        }
-
-        const colorThief = new ColorThief();
-        const img = document.querySelector('.song-image');
-        const colorMultiplier = 1.5; 
-        const colorThreshold =  120;
-
-        if (img.complete) {
-            const color = colorThief.getColor(img);
-            const colorString = getColorString(color, colorMultiplier, colorThreshold);
-            changeIconColors(colorString);
-        } else {
-            img.addEventListener('load', function() {
-            const color = colorThief.getColor(img);
-            const colorString = getColorString(color, colorMultiplier, colorThreshold);
-            changeIconColors(colorString);
-            })
-        }
-
-
-    </script>
+    if (img.complete) {
+      const color = colorThief.getColor(img);
+      const colorString = getColorString(
+        color,
+        colorMultiplier,
+        colorThreshold
+      );
+      changeIconColors(colorString);
+    } else {
+      img.addEventListener("load", function () {
+        const color = colorThief.getColor(img);
+        const colorString = getColorString(
+          color,
+          colorMultiplier,
+          colorThreshold
+        );
+        changeIconColors(colorString);
+      });
+    }
+  </script>
 </html>

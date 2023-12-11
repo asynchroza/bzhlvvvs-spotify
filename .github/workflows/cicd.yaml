@@ -18,6 +18,7 @@ jobs:
         PLAYLIST_ID: 05X2h4E9oMUJPywfgT1gqn 
         LINKEDIN: https://www.linkedin.com/in/mbozhilov/
         GITHUB: https://github.com/asynchroza/bzhlvvvs-spotify
+        SOUNDCLOUD: https://soundcloud.com/asynchroza
       steps:
         - uses: actions/checkout@v2
         - uses: actions/setup-python@v2
