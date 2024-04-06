@@ -34,12 +34,15 @@ def _get(obj: dict, key: str, throw: bool = False, default_value = None) -> str:
             raise Exception(f"{str(e)} key was not found in dictionary")
         return default_value
 
+def get_random_playlist_from_ids(ids: str) -> str:
+    playlist_ids = ids.split(',')
+    return playlist_ids[int(random() * len(playlist_ids))]
 
 def get_environment() -> dict[str, str]:
     return {
         "CLIENT_ID": _get(environ, "CLIENT_ID", throw=True),
         "CLIENT_SECRET": _get(environ, "CLIENT_SECRET", throw=True),
-        "PLAYLIST_ID": _get(environ, "PLAYLIST_ID", throw=True),
+        "PLAYLIST_ID": get_random_playlist_from_ids(_get(environ, "PLAYLIST_IDS", throw=True)),
         "TITLE": _get(environ, "TITLE", throw=True),
         "LINKEDIN": _get(environ, "LINKEDIN"),
         "GITHUB": _get(environ, "GITHUB"),
