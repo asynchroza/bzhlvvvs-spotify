@@ -1,4 +1,7 @@
 #!/bin/bash
+# For some reason I decided to keep loading the environment from a file in production
+# But you can omit this and define dotenv as a dev dependency
+# Load it and invoke it only if the environment is not prod
 
 DIR=src/.env.spotify
 # Write environment variables to .env file
