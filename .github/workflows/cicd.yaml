@@ -15,7 +15,7 @@ jobs:
         LAMBDA_URL: https://bzhlvvvs.com
         TITLE: "@bzhlvvvs"
         FAVICON_URL: https://personal-misho.s3.eu-north-1.amazonaws.com/favicon.ico
-        PLAYLIST_IDS: 05X2h4E9oMUJPywfgT1gqn,3nuZRm33NnifCXSnlAKK80
+        PLAYLIST_IDS: 05X2h4E9oMUJPywfgT1gqn,3nuZRm33NnifCXSnlAKK80,0pnvvwOgByky7n2Qg34U1U,0Ba1EqctaG4Sil5dOQQ8kK,38DrK5HY4bYlNMglFkRNK1
         LINKEDIN: https://www.linkedin.com/in/mbozhilov/
         GITHUB: https://github.com/asynchroza/bzhlvvvs-spotify
         SOUNDCLOUD: ""
@@ -28,5 +28,5 @@ jobs:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: eu-north-1
-  
+
         - run: make pipeline-deploy
